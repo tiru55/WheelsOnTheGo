@@ -2,31 +2,22 @@
 <header>
   <div class="default-header">
     <div class="container">
-      <div class="row">
+      <div class="row"> 
         <div class="col-sm-3 col-md-2">
-          <div class="logo"> <a href="index.php"><img src="assets/images/logo.png" alt="image"/></a> </div>
+          <div class="logo"> <a href="index.php"><img src="assets/images/logo.png" alt="image" style="width:200px;height:60px;object-fit:cover"/></a> </div>
         </div>
         <div class="col-sm-9 col-md-10">
           <div class="header_info">
          <?php
          $sql = "SELECT EmailId,ContactNo from tblcontactusinfo";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-foreach ($results as $result) {
-$email=$result->EmailId;
-$contactno=$result->ContactNo;
-}
-?>   
-
-            <div class="header_widgets">
-              <div class="circle_icon"> <i class="fa fa-envelope" aria-hidden="true"></i> </div>
-              <p class="uppercase_text">For Support Mail us : </p>
-              <a href="mailto:<?php echo htmlentities($email);?>"><?php echo htmlentities($email);?></a> </div>
-            <div class="header_widgets">
-              <div class="circle_icon"> <i class="fa fa-phone" aria-hidden="true"></i> </div>
-              <p class="uppercase_text">Service Helpline Call Us: </p>
-              <a href="tel:<?php echo htmlentities($contactno);?>"><?php echo htmlentities($contactno);?></a> </div>
+          $query = $dbh -> prepare($sql);
+          $query->execute();
+          $results=$query->fetchAll(PDO::FETCH_OBJ);
+          foreach ($results as $result) {
+          $email=$result->EmailId;
+          $contactno=$result->ContactNo;
+          }
+        ?>   
             <div class="social-follow">
             
             </div>
