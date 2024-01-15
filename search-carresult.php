@@ -43,7 +43,7 @@ error_reporting(0);
 <body>
 
 <!-- Start Switcher -->
-<?php include('includes/colorswitcher.php');?>
+
 <!-- /Switcher -->  
 
 <!--Header--> 
@@ -79,10 +79,12 @@ error_reporting(0);
 //Query for Listing count
 $brand=$_POST['brand'];
 $fueltype=$_POST['fueltype'];
-$sql = "SELECT id from tblvehicles where tblvehicles.VehiclesBrand=:brand and tblvehicles.FuelType=:fueltype";
+$location=$_POST['location'];
+$sql = "SELECT id from tblvehicles where tblvehicles.VehiclesBrand=:brand or tblvehicles.FuelType=:fueltype or tblvehicles.Location=:location";
 $query = $dbh -> prepare($sql);
 $query -> bindParam(':brand',$brand, PDO::PARAM_STR);
 $query -> bindParam(':fueltype',$fueltype, PDO::PARAM_STR);
+$query -> bindParam(':location',$location, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=$query->rowCount();
@@ -93,10 +95,11 @@ $cnt=$query->rowCount();
 
 <?php 
 
-$sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblvehicles.VehiclesBrand=:brand and tblvehicles.FuelType=:fueltype";
+$sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblvehicles.VehiclesBrand=:brand or tblvehicles.FuelType=:fueltype or tblvehicles.Location=:location";
 $query = $dbh -> prepare($sql);
 $query -> bindParam(':brand',$brand, PDO::PARAM_STR);
 $query -> bindParam(':fueltype',$fueltype, PDO::PARAM_STR);
+$query -> bindParam(':location',$location, PDO::PARAM_STR);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
 $cnt=1;
@@ -109,11 +112,12 @@ foreach($results as $result)
           </div>
           <div class="product-listing-content">
             <h5><a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?> , <?php echo htmlentities($result->VehiclesTitle);?></a></h5>
-            <p class="list-price">$<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
+            <p class="list-price">&#8377;<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
             <ul>
               <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($result->SeatingCapacity);?> seats</li>
               <li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo htmlentities($result->ModelYear);?> model</li>
               <li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
+              <li><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo htmlentities($result->Location);?></li>
             </ul>
             <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
           </div>
@@ -128,7 +132,7 @@ foreach($results as $result)
             <h5><i class="fa fa-filter" aria-hidden="true"></i> Find Your  Car </h5>
           </div>
           <div class="sidebar_filter">
-            <form action="#" method="get">
+            <form action="search-carresult.php" method="get">
               <div class="form-group select">
                 <select class="form-control">
                   <option>Select Brand</option>
@@ -155,7 +159,29 @@ foreach($results as $result)
 <option value="CNG">CNG</option>
                 </select>
               </div>
-             
+              <div class="form-group select">
+                <select class="form-control" name="location">
+                  <option>Select Location</option>
+                  <?php
+                    $sql = "SELECT Location FROM tblvehicles";
+                    $query = $dbh->prepare($sql);
+                    $query->execute();
+                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    $cnt = 1;
+
+                    if ($query->rowCount() > 0) {
+                        foreach ($results as $result) {
+                            if ($result->Location !== "") {
+                                ?>
+                                <option value="<?php echo htmlentities($result->Location); ?>"><?php echo htmlentities($result->Location); ?></option>
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+
+                </select>
+              </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
               </div>

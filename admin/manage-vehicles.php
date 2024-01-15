@@ -99,12 +99,14 @@ $msg="Vehicle  record deleted successfully";
 											<th>Price Per day</th>
 											<th>Fuel Type</th>
 											<th>Model Year</th>
+											<th>City</th>
+											<th>Location</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
 
-<?php $sql = "SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
+<?php $sql = "SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id,tblvehicles.City,tblvehicles.Location from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -120,7 +122,10 @@ foreach($results as $result)
 											<td><?php echo htmlentities($result->PricePerDay);?></td>
 											<td><?php echo htmlentities($result->FuelType);?></td>
 												<td><?php echo htmlentities($result->ModelYear);?></td>
-		<td><a href="edit-vehicle.php?id=<?php echo $result->id;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+												<td><?php echo htmlentities($result->City);?></td>
+												<td><?php echo htmlentities($result->Location);?></td>
+
+												<td><a href="edit-vehicle.php?id=<?php echo $result->id;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
 <a href="manage-vehicles.php?del=<?php echo $result->id;?>" onclick="return confirm('Do you want to delete');"><i class="fa fa-close"></i></a></td>
 										</tr>
 										<?php $cnt=$cnt+1; }} ?>

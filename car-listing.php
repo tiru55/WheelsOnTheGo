@@ -43,7 +43,7 @@ error_reporting(0);
 <body>
 
 <!-- Start Switcher -->
-<?php include('includes/colorswitcher.php');?>
+
 <!-- /Switcher -->  
 
 <!--Header--> 
@@ -106,6 +106,7 @@ foreach($results as $result)
               <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($result->SeatingCapacity);?> seats</li>
               <li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo htmlentities($result->ModelYear);?> model</li>
               <li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
+              <li><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo htmlentities($result->Location);?></li>
             </ul>
             <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
           </div>
@@ -142,9 +143,32 @@ foreach($results as $result)
               <div class="form-group select">
                 <select class="form-control" name="fueltype">
                   <option>Select Fuel Type</option>
-<option value="Petrol">Petrol</option>
-<option value="Diesel">Diesel</option>
-<option value="CNG">CNG</option>
+                  <option value="Petrol">Petrol</option>
+                  <option value="Diesel">Diesel</option>
+                  <option value="CNG">CNG</option>
+                </select>
+              </div>
+              <div class="form-group select">
+                <select class="form-control" name="location">
+                  <option>Select Location</option>
+                  <?php
+                    $sql = "SELECT Location FROM tblvehicles";
+                    $query = $dbh->prepare($sql);
+                    $query->execute();
+                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    $cnt = 1;
+
+                    if ($query->rowCount() > 0) {
+                        foreach ($results as $result) {
+                            if ($result->Location !== "") {
+                                ?>
+                                <option value="<?php echo htmlentities($result->Location); ?>"><?php echo htmlentities($result->Location); ?></option>
+                                <?php
+                            }
+                        }
+                    }
+                    ?>
+
                 </select>
               </div>
              

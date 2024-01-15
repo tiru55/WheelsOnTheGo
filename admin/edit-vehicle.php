@@ -17,6 +17,8 @@ $priceperday=$_POST['priceperday'];
 $fueltype=$_POST['fueltype'];
 $modelyear=$_POST['modelyear'];
 $seatingcapacity=$_POST['seatingcapacity'];
+$city = $_POST['city'];
+$location = $_POST['location'];
 $airconditioner=$_POST['airconditioner'];
 $powerdoorlocks=$_POST['powerdoorlocks'];
 $antilockbrakingsys=$_POST['antilockbrakingsys'];
@@ -31,7 +33,7 @@ $crashcensor=$_POST['crashcensor'];
 $leatherseats=$_POST['leatherseats'];
 $id=intval($_GET['id']);
 
-$sql="update tblvehicles set VehiclesTitle=:vehicletitle,VehiclesBrand=:brand,VehiclesOverview=:vehicleoverview,PricePerDay=:priceperday,FuelType=:fueltype,ModelYear=:modelyear,SeatingCapacity=:seatingcapacity,AirConditioner=:airconditioner,PowerDoorLocks=:powerdoorlocks,AntiLockBrakingSystem=:antilockbrakingsys,BrakeAssist=:brakeassist,PowerSteering=:powersteering,DriverAirbag=:driverairbag,PassengerAirbag=:passengerairbag,PowerWindows=:powerwindow,CDPlayer=:cdplayer,CentralLocking=:centrallocking,CrashSensor=:crashcensor,LeatherSeats=:leatherseats where id=:id ";
+$sql="update tblvehicles set VehiclesTitle=:vehicletitle,VehiclesBrand=:brand,VehiclesOverview=:vehicleoverview,PricePerDay=:priceperday,FuelType=:fueltype,ModelYear=:modelyear,SeatingCapacity=:seatingcapacity,City=:city,Location=:location,AirConditioner=:airconditioner,PowerDoorLocks=:powerdoorlocks,AntiLockBrakingSystem=:antilockbrakingsys,BrakeAssist=:brakeassist,PowerSteering=:powersteering,DriverAirbag=:driverairbag,PassengerAirbag=:passengerairbag,PowerWindows=:powerwindow,CDPlayer=:cdplayer,CentralLocking=:centrallocking,CrashSensor=:crashcensor,LeatherSeats=:leatherseats where id=:id ";
 $query = $dbh->prepare($sql);
 $query->bindParam(':vehicletitle',$vehicletitle,PDO::PARAM_STR);
 $query->bindParam(':brand',$brand,PDO::PARAM_STR);
@@ -40,6 +42,8 @@ $query->bindParam(':priceperday',$priceperday,PDO::PARAM_STR);
 $query->bindParam(':fueltype',$fueltype,PDO::PARAM_STR);
 $query->bindParam(':modelyear',$modelyear,PDO::PARAM_STR);
 $query->bindParam(':seatingcapacity',$seatingcapacity,PDO::PARAM_STR);
+$query->bindParam(':city',$city,PDO::PARAM_STR);
+$query->bindParam(':location',$location,PDO::PARAM_STR);
 $query->bindParam(':airconditioner',$airconditioner,PDO::PARAM_STR);
 $query->bindParam(':powerdoorlocks',$powerdoorlocks,PDO::PARAM_STR);
 $query->bindParam(':antilockbrakingsys',$antilockbrakingsys,PDO::PARAM_STR);
@@ -56,8 +60,7 @@ $query->bindParam(':id',$id,PDO::PARAM_STR);
 $query->execute();
 
 $msg="Data updated successfully";
-
-
+header('location:manage-vehicles.php');
 }
 
 
@@ -182,7 +185,7 @@ continue;
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">Price Per Day(in USD)<span style="color:red">*</span></label>
+<label class="col-sm-2 control-label">Price Per Day(in INR)<span style="color:red">*</span></label>
 <div class="col-sm-4">
 <input type="text" name="priceperday" class="form-control" value="<?php echo htmlentities($result->PricePerDay);?>" required>
 </div>
@@ -207,6 +210,19 @@ continue;
 <label class="col-sm-2 control-label">Seating Capacity<span style="color:red">*</span></label>
 <div class="col-sm-4">
 <input type="text" name="seatingcapacity" class="form-control" value="<?php echo htmlentities($result->SeatingCapacity);?>" required>
+</div>
+</div>
+<div class="form-group">
+<label class="col-sm-2 control-label">City<span style="color:red">*</span></label>
+<div class="col-sm-4">
+<select class="form-control" name="city" required>
+	<option value="Bangalore">Bangalore</option>
+	<option value="Hyderabad">Hyderabad</option>
+</select>
+</div>
+<label class="col-sm-2 control-label">Location<span style="color:red">*</span></label>
+<div class="col-sm-4">
+<input type="text" name="location" class="form-control" value="<?php echo htmlentities($result->Location);?>" required>
 </div>
 </div>
 <div class="hr-dashed"></div>								

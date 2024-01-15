@@ -17,6 +17,8 @@ $priceperday=$_POST['priceperday'];
 $fueltype=$_POST['fueltype'];
 $modelyear=$_POST['modelyear'];
 $seatingcapacity=$_POST['seatingcapacity'];
+$city = $_POST['city'];
+$location = $_POST['location'];
 $vimage1=$_FILES["img1"]["name"];
 $vimage2=$_FILES["img2"]["name"];
 $vimage3=$_FILES["img3"]["name"];
@@ -40,7 +42,7 @@ move_uploaded_file($_FILES["img3"]["tmp_name"],"img/vehicleimages/".$_FILES["img
 move_uploaded_file($_FILES["img4"]["tmp_name"],"img/vehicleimages/".$_FILES["img4"]["name"]);
 move_uploaded_file($_FILES["img5"]["tmp_name"],"img/vehicleimages/".$_FILES["img5"]["name"]);
 
-$sql="INSERT INTO tblvehicles(VehiclesTitle,VehiclesBrand,VehiclesOverview,PricePerDay,FuelType,ModelYear,SeatingCapacity,Vimage1,Vimage2,Vimage3,Vimage4,Vimage5,AirConditioner,PowerDoorLocks,AntiLockBrakingSystem,BrakeAssist,PowerSteering,DriverAirbag,PassengerAirbag,PowerWindows,CDPlayer,CentralLocking,CrashSensor,LeatherSeats) VALUES(:vehicletitle,:brand,:vehicleoverview,:priceperday,:fueltype,:modelyear,:seatingcapacity,:vimage1,:vimage2,:vimage3,:vimage4,:vimage5,:airconditioner,:powerdoorlocks,:antilockbrakingsys,:brakeassist,:powersteering,:driverairbag,:passengerairbag,:powerwindow,:cdplayer,:centrallocking,:crashcensor,:leatherseats)";
+$sql="INSERT INTO tblvehicles(VehiclesTitle,VehiclesBrand,VehiclesOverview,PricePerDay,FuelType,ModelYear,SeatingCapacity,Vimage1,Vimage2,Vimage3,Vimage4,Vimage5,City,Location,AirConditioner,PowerDoorLocks,AntiLockBrakingSystem,BrakeAssist,PowerSteering,DriverAirbag,PassengerAirbag,PowerWindows,CDPlayer,CentralLocking,CrashSensor,LeatherSeats) VALUES(:vehicletitle,:brand,:vehicleoverview,:priceperday,:fueltype,:modelyear,:seatingcapacity,:vimage1,:vimage2,:vimage3,:vimage4,:vimage5,:city,:location,:airconditioner,:powerdoorlocks,:antilockbrakingsys,:brakeassist,:powersteering,:driverairbag,:passengerairbag,:powerwindow,:cdplayer,:centrallocking,:crashcensor,:leatherseats)";
 $query = $dbh->prepare($sql);
 $query->bindParam(':vehicletitle',$vehicletitle,PDO::PARAM_STR);
 $query->bindParam(':brand',$brand,PDO::PARAM_STR);
@@ -54,6 +56,8 @@ $query->bindParam(':vimage2',$vimage2,PDO::PARAM_STR);
 $query->bindParam(':vimage3',$vimage3,PDO::PARAM_STR);
 $query->bindParam(':vimage4',$vimage4,PDO::PARAM_STR);
 $query->bindParam(':vimage5',$vimage5,PDO::PARAM_STR);
+$query->bindParam(':city',$city,PDO::PARAM_STR);
+$query->bindParam(':location',$location,PDO::PARAM_STR);
 $query->bindParam(':airconditioner',$airconditioner,PDO::PARAM_STR);
 $query->bindParam(':powerdoorlocks',$powerdoorlocks,PDO::PARAM_STR);
 $query->bindParam(':antilockbrakingsys',$antilockbrakingsys,PDO::PARAM_STR);
@@ -187,7 +191,7 @@ foreach($results as $result)
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">Price Per Day(in USD)<span style="color:red">*</span></label>
+<label class="col-sm-2 control-label">Price Per Day(in INR)<span style="color:red">*</span></label>
 <div class="col-sm-4">
 <input type="text" name="priceperday" class="form-control" required>
 </div>
@@ -212,6 +216,19 @@ foreach($results as $result)
 <label class="col-sm-2 control-label">Seating Capacity<span style="color:red">*</span></label>
 <div class="col-sm-4">
 <input type="text" name="seatingcapacity" class="form-control" required>
+</div>
+</div>
+<div class="form-group">
+<label class="col-sm-2 control-label">City<span style="color:red">*</span></label>
+<div class="col-sm-4">
+<select class="form-control" name="city" required>
+	<option value="Bangalore">Bangalore</option>
+	<option value="Hyderabad">Hyderabad</option>
+</select>
+</div>
+<label class="col-sm-2 control-label">Location<span style="color:red">*</span></label>
+<div class="col-sm-4">
+<input type="text" name="location" class="form-control" required>
 </div>
 </div>
 <div class="hr-dashed"></div>
