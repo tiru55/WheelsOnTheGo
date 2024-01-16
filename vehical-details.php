@@ -35,8 +35,22 @@ $query->execute();
 $lastInsertId = $dbh->lastInsertId();
 if($lastInsertId)
 {
-echo "<script>alert('Booking successfull.');</script>";
-echo "<script type='text/javascript'> document.location = 'my-booking.php'; </script>";
+  $vhid=$_GET['vhid'];
+  $amount = 0;
+  $sql = "SELECT tblvehicles.PricePerDay FROM tblvehicles where tblvehicles.id=:vhid";
+                    $query = $dbh->prepare($sql);
+                    $query -> bindParam(':vhid',$vhid, PDO::PARAM_STR);
+                    $query->execute();
+                    $results = $query->fetchAll(PDO::FETCH_OBJ);
+                    $cnt = 1;
+
+                    if ($query->rowCount() > 0) {
+                        foreach ($results as $result) {
+                          $amount = $result->PricePerDay;
+                        }
+                    }
+  header('location: payment.php?amount=' . urlencode($amount));
+  exit();
 }
 else 
 {
@@ -160,6 +174,10 @@ $_SESSION['brndid']=$result->bid;
             <li> <i class="fa fa-user-plus" aria-hidden="true"></i>
               <h5><?php echo htmlentities($result->SeatingCapacity);?></h5>
               <p>Seats</p>
+            </li>
+            <li> <i class="fa fa-map-marker" aria-hidden="true"></i>
+              <h5><?php echo htmlentities($result->Location);?></h5>
+              <p>Location</p>
             </li>
           </ul>
         </div>
@@ -354,12 +372,6 @@ $_SESSION['brndid']=$result->bid;
               <label>To Date:</label>
               <input type="date" class="form-control" name="todate" placeholder="To Date" required>
             </div>
-            <div class="form-group">
-              <select name="bew" id="bew" class="form-control">
-                <option value="">Select Location</option>
-                <option value="">BTM</option>
-              </select>
-            </div>
           <?php if($_SESSION['login'])
               {?>
               <div class="form-group">
@@ -384,7 +396,7 @@ $_SESSION['brndid']=$result->bid;
       <div class="row">
 <?php 
 $bid=$_SESSION['brndid'];
-$sql="SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id,tblvehicles.SeatingCapacity,tblvehicles.VehiclesOverview,tblvehicles.Vimage1 from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblvehicles.VehiclesBrand=:bid";
+$sql="SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id,tblvehicles.SeatingCapacity,tblvehicles.VehiclesOverview,tblvehicles.Vimage1,tblvehicles.Location from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand where tblvehicles.VehiclesBrand=:bid";
 $query = $dbh -> prepare($sql);
 $query->bindParam(':bid',$bid, PDO::PARAM_STR);
 $query->execute();
@@ -407,6 +419,7 @@ foreach($results as $result)
              <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($result->SeatingCapacity);?> seats</li>
                 <li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo htmlentities($result->ModelYear);?> model</li>
                 <li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
+                <li><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo htmlentities($result->Location);?></li>
               </ul>
             </div>
           </div>

@@ -87,7 +87,9 @@ $cnt=$query->rowCount();
 </div>
 </div>
 
-<?php $sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
+<?php 
+$sold_out = false;
+$sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
 $query = $dbh -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -95,7 +97,15 @@ $cnt=1;
 if($query->rowCount() > 0)
 {
 foreach($results as $result)
-{  ?>
+{ 
+  $bookingSql = "SELECT * FROM tblbooking WHERE VehicleId=:vehicleId";
+  $bookingQuery = $dbh->prepare($bookingSql);
+  $bookingQuery->bindParam(':vehicleId', $result->id, PDO::PARAM_INT);
+  $bookingQuery->execute();
+  $bookingResult = $bookingQuery->fetch(PDO::FETCH_OBJ);
+  $sold_out = ($bookingResult !== false);
+
+  ?>
         <div class="product-listing-m gray-bg">
           <div class="product-listing-img"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" class="img-responsive" alt="Image" /> </a> 
           </div>
@@ -108,7 +118,7 @@ foreach($results as $result)
               <li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
               <li><i class="fa fa-map-marker" aria-hidden="true"></i><?php echo htmlentities($result->Location);?></li>
             </ul>
-            <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+            <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn <?php echo $sold_out == true ? "disabled" : "" ?>" role="button" ><?php echo $sold_out == true ? "Sold Out" : "View"  ?> <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
           </div>
         </div>
       <?php }} ?>
