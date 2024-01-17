@@ -378,7 +378,7 @@ $_SESSION['brndid']=$result->bid;
                 <input type="submit" class="btn"  name="submit" value="Book Now">
               </div>
               <?php } else { ?>
-<a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login For Book</a>
+<a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login To Book</a>
 
               <?php } ?>
           </form>

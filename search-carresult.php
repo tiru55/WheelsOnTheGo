@@ -58,7 +58,7 @@ error_reporting(0);
         <h1>Car Listing</h1>
       </div>
       <ul class="coustom-breadcrumb">
-        <li><a href="#">Home</a></li>
+        <li><a href="index.php">Home</a></li>
         <li>Car Listing</li>
       </ul>
     </div>
