@@ -17,7 +17,7 @@ $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':eid',$eid, PDO::PARAM_STR);
 $query -> execute();
   echo "<script>alert('Booking Successfully Cancelled');</script>";
-echo "<script type='text/javascript'> document.location = 'canceled-bookings.php; </script>";
+  header("location: new-bookings.php");
 }
 
 
@@ -32,9 +32,21 @@ $query -> bindParam(':status',$status, PDO::PARAM_STR);
 $query-> bindParam(':aeid',$aeid, PDO::PARAM_STR);
 $query -> execute();
 echo "<script>alert('Booking Successfully Confirmed');</script>";
+header("location: confirmed-bookings.php");
+}
+if(isset($_REQUEST['reid']))
+	{
+$reid=intval($_GET['reid']);
+$status=3;
+
+$sql = "UPDATE tblbooking SET Status=:status WHERE  id=:reid";
+$query = $dbh->prepare($sql);
+$query -> bindParam(':status',$status, PDO::PARAM_STR);
+$query-> bindParam(':reid',$reid, PDO::PARAM_STR);
+$query -> execute();
+echo "<script>alert('Booking Successfully Returned');</script>";
 echo "<script type='text/javascript'> document.location = 'confirmed-bookings.php'; </script>";
 }
-
 
  ?>
 
@@ -54,7 +66,7 @@ echo "<script type='text/javascript'> document.location = 'confirmed-bookings.ph
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<!-- Sandstone Bootstrap CSS -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
 	<!-- Bootstrap Datatables -->
 	<link rel="stylesheet" href="css/dataTables.bootstrap.min.css">
 	<!-- Bootstrap social button library -->
@@ -204,6 +216,12 @@ echo htmlentities('Confirmed');
 <a href="bookig-details.php?eid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to Cancel this Booking')" class="btn btn-danger"> Cancel Booking</a>
 </td>
 </tr>
+<?php }else if($result->Status==1){ ?>
+	<tr>	
+		<td style="text-align:center" colspan="4">
+			<a href="bookig-details.php?reid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to Return this booking')" class="btn btn-primary"> Return</a> 
+		</td>
+	</tr>
 <?php } ?>
 										<?php $cnt=$cnt+1; }} ?>
 										

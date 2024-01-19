@@ -99,14 +99,6 @@ $msg="Subscriber info deleted";
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-										<th>#</th>
-										<th>Email Id</th>
-										<th>Subscription Date</th>
-											<th>Action</th>
-										</tr>
-									</tfoot>
 									<tbody>
 
 									<?php $sql = "SELECT * from tblsubscribers";

@@ -98,14 +98,13 @@ if($query->rowCount() > 0)
 {
 foreach($results as $result)
 { 
-  $bookingSql = "SELECT * FROM tblbooking WHERE VehicleId=:vehicleId";
+  $bookingSql = "SELECT * FROM `tblbooking` WHERE VehicleId=:vehicleId AND Status=1";
   $bookingQuery = $dbh->prepare($bookingSql);
   $bookingQuery->bindParam(':vehicleId', $result->id, PDO::PARAM_INT);
   $bookingQuery->execute();
   $bookingResult = $bookingQuery->fetch(PDO::FETCH_OBJ);
   $sold_out = ($bookingResult !== false);
-
-  ?>
+?>
         <div class="product-listing-m gray-bg">
           <div class="product-listing-img"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" class="img-responsive" alt="Image" /> </a> 
           </div>

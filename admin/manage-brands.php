@@ -102,17 +102,6 @@ $msg="Page data updated  successfully";
 											<th>Action</th>
 										</tr>
 									</thead>
-									<tfoot>
-										<tr>
-										<th>#</th>
-											<th>Brand Name</th>
-											<th>Creation Date</th>
-											<th>Updation date</th>
-										
-											<th>Action</th>
-										</tr>
-										</tr>
-									</tfoot>
 									<tbody>
 
 									<?php $sql = "SELECT * from  tblbrands ";

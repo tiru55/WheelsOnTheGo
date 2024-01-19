@@ -89,7 +89,7 @@
           </div>
         </div>
         <div class="panel panel-default">
-          <div class="panel-heading">Test Card</div>
+          <div class="panel-heading">Sample Card</div>
           <div class="panel-body">
           <table class="table table-striped" id="card-details">
                 <tr>
